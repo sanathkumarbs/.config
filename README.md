@@ -1,0 +1,2 @@
+# .config
+dotfiles for sanath
