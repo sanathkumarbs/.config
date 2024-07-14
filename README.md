@@ -1,2 +1,2 @@
 # .config
-dotfiles for sanath
+dotfiles for sanath using XDG Base Spec
