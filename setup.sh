@@ -1,5 +1,5 @@
 #!/bin/bash
-set -euo pipefail
+set -euxo pipefail
 
 sudo -v
 # Keep-alive: update existing `sudo` time stamp until script has finished
