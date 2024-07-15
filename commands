@@ -1,3 +1,5 @@
 brew bundle --no-lock
-brew bundle dump -f && grep -v "stripe" Brewfile > tmpfile && mv tmpfile Brewfile
+brew bundle dump -f && grep -v "vscode " && grep -v "stripe" Brewfile > tmpfile && mv tmpfile Brewfile
+brew bundle dump -f && grep -v "vscode " && grep -v "stripe" Brewfile > tmpfile && mv tmpfile Brewfile
 brew upgrade && brew update && brew autoremove && brew cleanup
+code --list-extensions
