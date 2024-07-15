@@ -49,8 +49,6 @@ function git_clone() {
   fi
 }
 
-
-
 echo "setting up .zshenv"
 copy_dotfile zsh/.zshenv "$HOME"/
 
