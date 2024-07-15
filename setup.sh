@@ -15,8 +15,11 @@ function symlink_dotfile() {
   local full_file_path
   full_file_path="$(dotfiles_location)/$file"
 
-  if [ ! -d "$destination" ]; then
-    mkdir -p "$(dirname "$destination")"
+  local parentdir
+  parentdir=$(dirname "$destination")  
+
+  if [ ! -d "$parentdir" ]; then
+    mkdir -p "$parentdir"
   fi
 
   if [ ! -L "$destination" ]; then
@@ -30,21 +33,19 @@ function copy_dotfile() {
   local destination=$2
   local full_file_path
   full_file_path="$(dotfiles_location)/$file"
-  
-  if [ ! -d "$destination" ]; then
-    mkdir -p "$(dirname "$destination")"
-  fi
 
   if [ ! -d "$destination" ]; then
-    echo "Copying $full_file_path -> $destination"
-    cp "$full_file_path" "$destination"
+    mkdir -p "$destination"
   fi
+
+  echo "Copying $full_file_path -> $destination"
+  cp "$full_file_path" "$destination"
 }
 
 function git_clone() {
   local repo_url=$1
   local destination=$2
-  if [ ! -d "$destination" ]; then
+  if [ ! -e "$destination" ]; then
     git clone "$repo_url" "$destination"
   fi
 }
@@ -61,8 +62,10 @@ if [ ! -d "$HOME/.config/zsh/oh-my-zsh" ]; then
 fi
 
 echo "setting up zsh"
+copy_dotfile zsh/.zshenv "$HOME"/
 symlink_dotfile zsh/.zshrc "$HOME"/.config/zsh/.zshrc
 symlink_dotfile zsh/.zprofile "$HOME"/.config/zsh/.zprofile
+symlink_dotfile zsh/.p10k.zsh "$HOME"/.config/zsh/.p10k.zsh
 
 echo "using powerlevel10k for zsh"
 export ZSH_CUSTOM="$HOME/.config/zsh/oh-my-zsh/custom"
