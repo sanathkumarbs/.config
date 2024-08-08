@@ -15,6 +15,8 @@ dotfiles for sanath using XDG Base Spec
 │   ├── Brewfile                -> brews that i love
 │   └── Brewfile-minimal        -> minimal brew for remote machines
 ├── setup.sh                    -> setting up the configs by moving things to $HOME/.config 
+├── tmux
+│   └── tmux.conf               -> sets up tmux how i like it :)
 ├── vscode
 │   └── software.json           -> extensions on vscode that i rely on
 └── zsh
