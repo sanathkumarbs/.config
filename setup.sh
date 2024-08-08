@@ -78,6 +78,12 @@ git_clone https://github.com/marlonrichert/zsh-autocomplete.git "$ZSH_CUSTOM"/pl
 
 echo "finished setting up zsh... 🚀"
 
+echo "setting up tmux"
+# tmux doesn't support XDG_CONFIG_HOME so needs this double symlink
+symlink_dotfile tmux/tmux.conf "$HOME"/.config/tmux/.tmux.conf
+symlink_dotfile tmux/tmux.conf ~/.tmux.conf
+echo "finished setting up tmux... 🚀"
+
 if [ -f "$HOME"/work/dotfiles/setup.sh ]; then
   echo "setting up work dotfiles... "
   # shellcheck source=/dev/null
