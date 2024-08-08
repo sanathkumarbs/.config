@@ -24,7 +24,7 @@ dotfiles for sanath using XDG Base Spec
 
 ## zsh setup notes:
 
-Work dotfiles should be hosted at `$HOME/work/dotfiles` which will be sourced in the zshrc during init
+Work dotfiles should be hosted at `$HOME/work/dotfiles` which will setup if they're found:
 
 ```
 if [ -f "$HOME"/work/dotfiles/setup.sh ]; then
@@ -34,6 +34,15 @@ if [ -f "$HOME"/work/dotfiles/setup.sh ]; then
 else
   echo "failed to setup work dotfiles, setup.sh not found in $HOME/work/dotfiles/"
 fi
+```
+
+Additionally, work dotfiles should contain it's own `zshrc` config which will be sourced if present from the `zsh/.zshrc` present in this repo
+
+```
+if [[ -f ~/work/dotfiles/zshrc ]]; then
+  source ~/work/dotfiles/zshrc
+fi
+
 ```
 
 how `$HOME/work/dotfiles` should be organized
