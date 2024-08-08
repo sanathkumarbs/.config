@@ -1,7 +1,7 @@
 # .config
 dotfiles for sanath using XDG Base Spec
 
-Organization:
+## organization:
 
 ├── README.md                   -> this doc :) 
 ├── aliases                     -> dir to hold personal custom aliases
@@ -21,3 +21,24 @@ Organization:
     ├── .zprofile               -> personal zsh configs
     ├── .zshenv                 -> personal zsh configs
     └── .zshrc                  -> personal zsh configs
+
+## zsh setup notes:
+
+Work dotfiles should be hosted at `$HOME/work/dotfiles` which will be sourced in the zshrc during init
+
+```
+if [ -f "$HOME"/work/dotfiles/setup.sh ]; then
+  echo "setting up work dotfiles... "
+  # shellcheck source=/dev/null
+  source "$HOME"/work/dotfiles/setup.sh
+else
+  echo "failed to setup work dotfiles, setup.sh not found in $HOME/work/dotfiles/"
+fi
+```
+
+how `$HOME/work/dotfiles` should be organized
+.
+├── .bash_profile.atlas.aliases     -> work specific bash aliases
+├── README.md                       -> document! document!
+├── setup.sh                        -> setting up aliases or any configs into $HOME/.config 
+└── zshrc                           -> work specific zshrc configs
