@@ -3,6 +3,7 @@ dotfiles for sanath using XDG Base Spec
 
 ## organization:
 
+```
 ├── README.md                   -> this doc :) 
 ├── aliases                     -> dir to hold personal custom aliases
 ├── apple
@@ -21,6 +22,7 @@ dotfiles for sanath using XDG Base Spec
     ├── .zprofile               -> personal zsh configs
     ├── .zshenv                 -> personal zsh configs
     └── .zshrc                  -> personal zsh configs
+```
 
 ## zsh setup notes:
 
@@ -46,8 +48,11 @@ fi
 ```
 
 how `$HOME/work/dotfiles` should be organized
+
+```
 .
 ├── .bash_profile.atlas.aliases     -> work specific bash aliases
 ├── README.md                       -> document! document!
 ├── setup.sh                        -> setting up aliases or any configs into $HOME/.config 
 └── zshrc                           -> work specific zshrc configs
+```
