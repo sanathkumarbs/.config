@@ -154,11 +154,11 @@ bindkey "[C" forward-word
 bindkey "[D" backward-word
 
 # folks who have autosuggest + autocomplete seem to choose this setup
-# But, as I don't like autocomplete my tab complete just uses autosuggestion
+# But, as I don't like autocomplete, I just use autosuggestion
 # bindkey '^I'   complete-word       # tab          | autocomplete
 # bindkey '^[[Z' autosuggest-accept  # shift + tab  | autosuggest
 # - my version below -
-bindkey '^I'  autosuggest-accept       # tab | autosuggest
+bindkey '^[[Z' autosuggest-accept  # shift + tab  | autosuggest
 
 # Start SSH agent if it's not running
 if [ -z "$SSH_AUTH_SOCK" ]; then
