@@ -77,3 +77,11 @@ git_clone https://github.com/zsh-users/zsh-syntax-highlighting.git "$ZSH_CUSTOM"
 git_clone https://github.com/marlonrichert/zsh-autocomplete.git "$ZSH_CUSTOM"/plugins/zsh-autocomplete
 
 echo "finished setting up zsh... 🚀"
+
+if [ -f "$HOME"/work/dotfiles/setup.sh ]; then
+  echo "setting up work dotfiles... "
+  # shellcheck source=/dev/null
+  source "$HOME"/work/dotfiles/setup.sh
+else
+  echo "failed to setup work dotfiles, setup.sh not found in $HOME/work/dotfiles/"
+fi
