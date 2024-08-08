@@ -80,7 +80,6 @@ DISABLE_UNTRACKED_FILES_DIRTY="true"
 # Add wisely, as too many plugins slow down shell startup.
 plugins=(
 	git
-        web-search
 	zsh-autosuggestions
 	zsh-syntax-highlighting
 	# zsh-autocomplete
@@ -128,12 +127,24 @@ alias cookit='tc && cz'
 # To customize prompt, run `p10k configure` or edit ~/.config/zsh/.p10k.zsh.
 [[ ! -f ~/.config/zsh/.p10k.zsh ]] || source ~/.config/zsh/.p10k.zsh
 
-if [[ -f ~/.stripe/shellinit/zshrc ]]; then
-  source ~/.stripe/shellinit/zshrc
+if [[ -f ~/work/dotfiles/zshrc ]]; then
+  source ~/work/dotfiles/zshrc
 fi
 
-. /opt/homebrew/etc/profile.d/z.sh
-. /Users/sanath/work/dotfiles/.bash_profile.atlas.aliases
+# Determine the operating system
+if [[ "$OSTYPE" == "darwin"* ]]; then
+    # macOS
+    Z_SCRIPT="/opt/homebrew/etc/profile.d/z.sh"
+else
+    # consider everything else as Linux
+    Z_SCRIPT="/home/linuxbrew/.linuxbrew/etc/profile.d/z.sh"
+fi
+
+# Check if the file exists before sourcing
+if [ -f "$Z_SCRIPT" ]; then
+    source "$Z_SCRIPT"
+fi	
+
 # . $ZSH_CUSTOM/plugins/zsh-autocomplete/zsh-autocomplete.plugin.zsh
 
 # zstyle ':autocomplete:*' ignored-input 'z(|.*)'
@@ -142,4 +153,7 @@ fi
 bindkey "[C" forward-word
 bindkey "[D" backward-word
 
-[ -z "$SSH_AUTH_SOCK" ] && eval "$(ssh-agent -s)"
+# Start SSH agent if it's not running
+if [ -z "$SSH_AUTH_SOCK" ]; then
+    eval "$(ssh-agent -s)"
+fi
