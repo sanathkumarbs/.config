@@ -127,8 +127,17 @@ alias cookit='tc && cz'
 # To customize prompt, run `p10k configure` or edit ~/.config/zsh/.p10k.zsh.
 [[ ! -f ~/.config/zsh/.p10k.zsh ]] || source ~/.config/zsh/.p10k.zsh
 
+
+# TODO (sanath, 15-08-2024):
+# ~/work/dotfiles/zshrc is where files are present locally, and
+# /home/sanath/personal/dotfiles/zshrc is where it's present on remote
+# bring them to a common place at ~/.config maybe and source that so it works the same way on remote and local
 if [[ -f ~/work/dotfiles/zshrc ]]; then
   source ~/work/dotfiles/zshrc
+fi
+
+if [[ -f /home/sanath/personal/dotfiles/zshrc ]]; then
+  source /home/sanath/personal/dotfiles/zshrc
 fi
 
 # Determine the operating system
