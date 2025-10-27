@@ -11,7 +11,8 @@ sudo apt-get install -y \
     tmux \
     tree \
     wget \
-    zsh
+    zsh \
+    gh
 
 # Install fzf from git
 git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
@@ -55,3 +56,4 @@ echo "wget: $(wget --version | head -n 1)"
 echo "z: installed at ~/.local/bin/z.sh"
 echo "zsh: $(zsh --version)"
 echo "zsh-syntax-highlighting: installed at $ZSH_SYNTAX_DIR"
+echo "gh: $(gh --version)"
