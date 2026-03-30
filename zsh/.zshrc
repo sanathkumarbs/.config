@@ -142,14 +142,11 @@ fi
 
 # Determine the operating system
 if [[ "$OSTYPE" == "darwin"* ]]; then
-    # macOS
     Z_SCRIPT="/opt/homebrew/etc/profile.d/z.sh"
 else
-    # consider everything else as Linux
-    Z_SCRIPT="/home/linuxbrew/.linuxbrew/etc/profile.d/z.sh"
+    Z_SCRIPT="$HOME/.local/bin/z.sh"
 fi
 
-# Check if the file exists before sourcing
 if [ -f "$Z_SCRIPT" ]; then
     source "$Z_SCRIPT"
 fi	
