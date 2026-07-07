@@ -1,9 +1,13 @@
 #!/bin/bash
 set -euxo pipefail
 
-sudo -v
-# Keep-alive: update existing `sudo` time stamp until script has finished
-while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
+# This sets up per-user config and clones repos over your SSH keys. Running as
+# root (e.g. via `sudo`) makes everything root-owned and breaks GHE auth (root
+# has no SSH key). Refuse it — nothing here needs root.
+if [ "$(id -u)" -eq 0 ]; then
+  echo "Do NOT run this as root / with sudo. Run it as your normal user." >&2
+  exit 1
+fi
 
 function dotfiles_location() {
   echo "$HOME/personal/.config"
@@ -84,10 +88,10 @@ symlink_dotfile tmux/tmux.conf "$HOME"/.config/tmux/.tmux.conf
 symlink_dotfile tmux/tmux.conf ~/.tmux.conf
 echo "finished setting up tmux... 🚀"
 
-if [ -f "$HOME"/work/dotfiles/setup.sh ]; then
-  echo "setting up work dotfiles... "
-  # shellcheck source=/dev/null
-  source "$HOME"/work/dotfiles/setup.sh
-else
-  echo "failed to setup work dotfiles, setup.sh not found in $HOME/work/dotfiles/"
-fi
+# Extension point for machine-specific / work overrides. .config itself stays
+# portable and independent; layers on top (e.g. Stripe work dotfiles) drop a
+# *.zsh into here and it gets sourced by zsh/.zshrc. Composition of those layers
+# is the job of the bootstrap entrypoint, not this repo.
+echo "creating zsh extension point (~/.config/zsh/rc.d)"
+mkdir -p "$HOME"/.config/zsh/rc.d
+echo "finished personal setup... 🚀"
