@@ -48,7 +48,7 @@ will run.
 ├── README.md                -> this doc
 ├── SECURITY.md
 ├── setup.sh                 -> symlinks/copies configs into place; creates rc.d
-├── packages.sh              -> non-brew package setup (apt / from source)
+├── packages.sh              -> OS-aware package install (Homebrew on macOS, apt+source on Linux)
 ├── apple/apple.sh           -> macOS-only setup, run once per new mac
 ├── git/.gitconfig.personal  -> personal git identity
 ├── homebrew/
@@ -81,8 +81,9 @@ git clone https://github.com/sanathkumarbs/.config.git ~/personal/.config
 ```
 
 This installs zsh/oh-my-zsh/p10k/plugins/tmux and creates the
-`~/.config/zsh/rc.d` extension point. Open a new shell. `setup.sh` calls `sudo`,
-so run it yourself in a real terminal (it prompts for a password).
+`~/.config/zsh/rc.d` extension point. Open a new shell. Run it as your normal
+user — `setup.sh` refuses to run as root (running it under `sudo` breaks file
+ownership and is never needed).
 
 Full machine (base + private overlay): run your bootstrap entrypoint, which
 composes both layers in order.
