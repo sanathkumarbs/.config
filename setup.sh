@@ -84,8 +84,9 @@ symlink_dotfile tmux/tmux.conf "$HOME"/.config/tmux/.tmux.conf
 symlink_dotfile tmux/tmux.conf ~/.tmux.conf
 echo "finished setting up tmux... 🚀"
 
+echo "setting up work dotfiles"
+git_clone git@git.corp.stripe.com:sanath/dotfiles.git "$HOME"/work/dotfiles
 if [ -f "$HOME"/work/dotfiles/setup.sh ]; then
-  echo "setting up work dotfiles... "
   # shellcheck source=/dev/null
   source "$HOME"/work/dotfiles/setup.sh
 else
