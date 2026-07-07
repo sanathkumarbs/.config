@@ -128,17 +128,14 @@ alias cookit='tc && cz'
 [[ ! -f ~/.config/zsh/.p10k.zsh ]] || source ~/.config/zsh/.p10k.zsh
 
 
-# TODO (sanath, 15-08-2024):
-# ~/work/dotfiles/zshrc is where files are present locally, and
-# /home/sanath/personal/dotfiles/zshrc is where it's present on remote
-# bring them to a common place at ~/.config maybe and source that so it works the same way on remote and local
-if [[ -f ~/work/dotfiles/zshrc ]]; then
-  source ~/work/dotfiles/zshrc
-fi
-
-if [[ -f /home/sanath/personal/dotfiles/zshrc ]]; then
-  source /home/sanath/personal/dotfiles/zshrc
-fi
+# Machine-specific / work extension point. .config stays portable and knows
+# nothing about work: any *.zsh dropped into $ZDOTDIR/rc.d is sourced if present
+# (e.g. the Stripe work dotfiles symlink their zshrc to rc.d/50-stripe.zsh).
+# On a personal machine rc.d is empty and this is a no-op.
+for _rc in "${ZDOTDIR:-$HOME/.config/zsh}"/rc.d/*.zsh(N); do
+  source "$_rc"
+done
+unset _rc
 
 # Determine the operating system
 if [[ "$OSTYPE" == "darwin"* ]]; then

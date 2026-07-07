@@ -84,11 +84,10 @@ symlink_dotfile tmux/tmux.conf "$HOME"/.config/tmux/.tmux.conf
 symlink_dotfile tmux/tmux.conf ~/.tmux.conf
 echo "finished setting up tmux... 🚀"
 
-echo "setting up work dotfiles"
-git_clone git@git.corp.stripe.com:sanath/dotfiles.git "$HOME"/work/dotfiles
-if [ -f "$HOME"/work/dotfiles/setup.sh ]; then
-  # shellcheck source=/dev/null
-  source "$HOME"/work/dotfiles/setup.sh
-else
-  echo "failed to setup work dotfiles, setup.sh not found in $HOME/work/dotfiles/"
-fi
+# Extension point for machine-specific / work overrides. .config itself stays
+# portable and independent; layers on top (e.g. Stripe work dotfiles) drop a
+# *.zsh into here and it gets sourced by zsh/.zshrc. Composition of those layers
+# is the job of the bootstrap entrypoint, not this repo.
+echo "creating zsh extension point (~/.config/zsh/rc.d)"
+mkdir -p "$HOME"/.config/zsh/rc.d
+echo "finished personal setup... 🚀"
