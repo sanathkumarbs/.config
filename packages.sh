@@ -1,10 +1,26 @@
 #!/bin/bash
+set -euo pipefail
 
-# Update package list
-sudo apt-get update
+# Package installation, per OS:
+#   macOS  -> Homebrew, declaratively from homebrew/Brewfile
+#   Linux  -> apt + a couple of source installs (devbox)
+# Shell config (z sourcing, plugins) is owned by zsh/.zshrc, NOT this script —
+# it deliberately does not touch ~/.zshrc.
 
-# Install packages using apt-get
-sudo apt-get install -y \
+DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
+if [[ "$OSTYPE" == "darwin"* ]]; then
+  echo "macOS detected — installing via Homebrew (homebrew/Brewfile)"
+  if ! command -v brew >/dev/null 2>&1; then
+    echo "Homebrew not found. Install it first: https://brew.sh" >&2
+    exit 1
+  fi
+  brew bundle --file="$DIR/homebrew/Brewfile"
+  echo "brew bundle complete 🚀"
+else
+  echo "Linux detected — installing via apt + source"
+  sudo apt-get update
+  sudo apt-get install -y \
     xdg-utils \
     jq \
     shellcheck \
@@ -14,46 +30,14 @@ sudo apt-get install -y \
     zsh \
     gh
 
-# Install fzf from git
-git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
-~/.fzf/install --all
+  # fzf — binary only; keybindings/completion are left to shell config
+  [ -d "$HOME/.fzf" ] || git clone --depth 1 https://github.com/junegunn/fzf.git "$HOME/.fzf"
+  "$HOME/.fzf/install" --bin
 
-# Install z
-mkdir -p ~/.local/bin
-curl -o ~/.local/bin/z.sh https://raw.githubusercontent.com/rupa/z/master/z.sh
-chmod +x ~/.local/bin/z.sh
+  # z — zsh/.zshrc sources this from ~/.local/bin/z.sh on Linux
+  mkdir -p "$HOME/.local/bin"
+  curl -fsSL -o "$HOME/.local/bin/z.sh" https://raw.githubusercontent.com/rupa/z/master/z.sh
+  chmod +x "$HOME/.local/bin/z.sh"
 
-# Add z to shell configuration if not already present
-Z_CONFIG='[ -f ~/.local/bin/z.sh ] && source ~/.local/bin/z.sh'
-grep -q "$Z_CONFIG" ~/.zshrc || echo "$Z_CONFIG" >> ~/.zshrc
-
-# Install zsh-syntax-highlighting
-ZSH_SYNTAX_DIR="${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting"
-if [ ! -d "$ZSH_SYNTAX_DIR" ]; then
-    git clone https://github.com/zsh-users/zsh-syntax-highlighting.git "$ZSH_SYNTAX_DIR"
+  echo "apt + source installs complete 🚀"
 fi
-
-# Add zsh-syntax-highlighting to plugins if not already present
-if ! grep -q "plugins=.*zsh-syntax-highlighting" ~/.zshrc; then
-    # If plugins line exists, append to it
-    if grep -q "^plugins=(" ~/.zshrc; then
-        sed -i 's/^plugins=(/&zsh-syntax-highlighting /' ~/.zshrc
-    else
-        # If no plugins line exists, create it
-        echo "plugins=(zsh-syntax-highlighting)" >> ~/.zshrc
-    fi
-    echo "Added zsh-syntax-highlighting to plugins in ~/.zshrc"
-fi
-
-# Verify installations
-echo "Installed versions:"
-echo "fzf: $(~/.fzf/bin/fzf --version)"
-echo "jq: $(jq --version)"
-echo "shellcheck: $(shellcheck --version)"
-echo "tmux: $(tmux -V)"
-echo "tree: $(tree --version | head -n 1)"
-echo "wget: $(wget --version | head -n 1)"
-echo "z: installed at ~/.local/bin/z.sh"
-echo "zsh: $(zsh --version)"
-echo "zsh-syntax-highlighting: installed at $ZSH_SYNTAX_DIR"
-echo "gh: $(gh --version)"
